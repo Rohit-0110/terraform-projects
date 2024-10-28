@@ -1,10 +1,15 @@
+locals {
+  subnet-1 = ""
+  subnet-2 = ""
+}
+
 resource "kubernetes_ingress_v1" "gitlab-gitlab_workspaces_proxy" {
   metadata {
     name      = "gitlab-workspaces"
     namespace = "gitlab-workspaces"
     annotations = {
       alb.ingress.kubernetes.io / scheme       = "internal"
-      alb.ingress.kubernetes.io / subnets      = "subnet-0a8b25c1d88cfba9b, subnet-0351b9ea761cb1b50"
+      alb.ingress.kubernetes.io / subnets      = "local.subnet-2, local.subnet-1"
       alb.ingress.kubernetes.io / listen-ports = jsondecode([{ HTTP = 80 }, { HTTPS = 443 }])
       alb.ingress.kubernetes.io / ssl-redirect = "443"
 
@@ -14,17 +19,17 @@ resource "kubernetes_ingress_v1" "gitlab-gitlab_workspaces_proxy" {
   spec {
     ingress_class_name = "alb"
     tls {
-      hosts       = "workspaces.psiquantum.com"
+      hosts       = var.gitlab_workspaces_proxy_domain
       secret_name = "gitlab-workspaces-proxy-workspaces-cert"
 
     }
     tls {
-      hosts       = "*.workspaces.psiquantum.com"
+      hosts       = var.gitlab_workspaces_wildcard_domain
       secret_name = "gitlab-workspaces-proxy-workspaces-wildcard-cert"
 
     }
     rule {
-      host = "workspaces.psiquantum.com"
+      host = var.gitlab_workspaces_proxy_domain
       http {
         path {
           path      = "/"
@@ -41,7 +46,7 @@ resource "kubernetes_ingress_v1" "gitlab-gitlab_workspaces_proxy" {
       }
     }
     rule {
-      host = "*.workspaces.psiquantum.com"
+      host = "*.${var.gitlab_workspaces_proxy_domain}"
       http {
         path {
           path      = "/"
