@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: <ARN of instance role (NodeInstanceRole obtained from Terraform)>
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+
+#  Add mapUsers as below (ARN can be get in the AWS CLI command result in the previous step):
+  mapUsers: |
+    - userarn: arn:aws:iam::891377054545:user/iamuser-eksuser
+      username: iamuser-eksuser
+    - userarn:  arn:aws:iam::891377054545:user/iamuser-dev
+      username: iamuser-dev 
+    - userarn: arn:aws:iam::891377054545:user/iamuser-prod
+      username: iamuser-prod
