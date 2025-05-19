@@ -1,0 +1,37 @@
+# Ignore all .terraform directories in any subdirectory
+**/.terraform/
+
+# Ignore all .tfstate and .tfstate.* files in all subdirectories
+**/*.tfstate
+**/*.tfstate.*
+
+# Ignore all .tfvars and sensitive input files
+**/*.tfvars
+**/*.tfvars.json
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+
+# Ignore plan files
+**/*.plan
+
+# Ignore override files
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+
+# Ignore crash logs
+**/crash.log
+**/crash.*.log
+
+# Ignore backup files
+**/*.bak
+**/*.backup
+**/*.old
+
+# Optional: Ignore lock files (not recommended if you want consistent versions)
+**/.terraform.lock.hcl
+
+# Ignore tflint config/cache
+**/.tflint.hcl
+**/.terrascan.cache/

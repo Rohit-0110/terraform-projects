@@ -1,0 +1,24 @@
+Step-1 : Zip the application
+Working Director: /path/to/AwsDeploy
+
+command to zip the application
+
+$ cd staticApp
+$ zip ../app-v1.zip -r * .[^.]*
+
+Step-2 : Create a S3 bucket to store application app-v1.zip
+
+copy the app-v1.zip file to created S3 bucket
+
+$ aws s3 cp app-v1.zip s3://terraform-web-app-bucket-cf91f261b922/
+
+Step-3: Create devm enviroment using the script.sh
+
+$ chmod +x script.sh
+$ ./script.sh 
+
+Step-4: Execute the terraform commands
+
+$ terraform init
+$ terraform plan
+$ terraform apply
